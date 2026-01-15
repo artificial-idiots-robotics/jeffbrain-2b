@@ -12,10 +12,12 @@ from vex import *
 
 brain = Brain()
 
-LeftMotor = Motor(Ports.PORT1)
-RightMotor = Motor(Ports.PORT2)
-ClawLiftMotor = Motor(Ports.PORT3)
-ClawMotor = Motor(Ports.PORT4)
+LeftFrontMotor = Motor(Ports.PORT1)
+LeftBackMotor = Motor(Ports.PORT4)
+RightFrontMotor = Motor(Ports.PORT2)
+RightBackMotor = Motor(Ports.PORT5)
+LeftMotor = MotorGroup(LeftFrontMotor, LeftBackMotor)
+RightMotor = MotorGroup(RightFrontMotor, RightBackMotor)
 controller = Controller()
 
 image_pixels = [
@@ -7282,15 +7284,6 @@ def actually_start_controlling_stuff():
         RightMotor.set_velocity(((controller.axis1.position() - controller.axis3.position()) * 0.5), PERCENT)
         LeftMotor.spin(FORWARD)
         RightMotor.spin(FORWARD)
-
-        if controller.buttonUp.pressing():
-            ClawLiftMotor.spin(FORWARD)
-        if controller.buttonDown.pressing():
-            ClawLiftMotor.spin(REVERSE)
-        if controller.buttonL2.pressing():
-            ClawMotor.spin(REVERSE)
-        if controller.buttonR2.pressing():
-            ClawMotor.spin(FORWARD)
                 
         if controller.buttonX.pressing():
             controller.screen.clear_screen()
@@ -7349,78 +7342,3 @@ if controller.buttonX.pressing():
     controller.screen.set_cursor(0,0)
     controller.screen.print("uh")
     user_control()
-if controller.buttonY.pressing():
-    controller.screen.clear_screen()
-    controller.screen.set_cursor(0,0)
-    controller.screen.print("Jeffbrain 2")
-    controller.screen.next_row()
-    controller.screen.print("Test mode")
-    controller.screen.next_row()
-    controller.screen.print("A - Next")
-    while not (controller.buttonA.pressing()):
-        wait(5, MSEC)
-    controller.screen.clear_row(1)
-    controller.screen.set_cursor(0,1)
-    controller.screen.print("DBL test")
-    while not (controller.buttonA.pressing()):
-        wait(5, MSEC)
-    controller.screen.clear_row(1)
-    controller.screen.set_cursor(0,1)
-    controller.screen.print("Testing...")
-    LeftMotor.spin(FORWARD)
-    wait(3, SECONDS)
-    LeftMotor.stop()
-
-    while not (controller.buttonA.pressing()):
-        wait(5, MSEC)
-    controller.screen.clear_row(1)
-    controller.screen.set_cursor(0,1)
-    controller.screen.print("DBR test")
-    while not (controller.buttonA.pressing()):
-        wait(5, MSEC)
-    controller.screen.clear_row(1)
-    controller.screen.set_cursor(0,1)
-    controller.screen.print("Testing...")
-    RightMotor.spin(FORWARD)
-    wait(3, SECONDS)
-    RightMotor.stop()
- 
-    while not (controller.buttonA.pressing()):
-        wait(5, MSEC)
-    controller.screen.clear_row(1)
-    controller.screen.set_cursor(0,1)
-    controller.screen.print("ARM test")
-    while not (controller.buttonA.pressing()):
-        wait(5, MSEC)
-    controller.screen.clear_row(1)
-    controller.screen.set_cursor(0,1)
-    controller.screen.print("Testing...")
-    ClawLiftMotor.spin(FORWARD)
-    wait(3, SECONDS)
-    ClawLiftMotor.stop()
-
-    while not (controller.buttonA.pressing()):
-        wait(5, MSEC)
-    controller.screen.clear_row(1)
-    controller.screen.set_cursor(0,1)
-    controller.screen.print("CLW test")
-    while not (controller.buttonA.pressing()):
-        wait(5, MSEC)
-    controller.screen.clear_row(1)
-    controller.screen.set_cursor(0,1)
-    controller.screen.print("Testing...")
-    ClawMotor.spin(FORWARD)
-    wait(3, SECONDS)
-    ClawMotor.stop()
-
-    while not (controller.buttonA.pressing()):
-        wait(5, MSEC)
-    controller.screen.clear_row(1)
-    controller.screen.set_cursor(0,1)
-    controller.screen.print("Task complete")
-    controller.screen.next_row()
-    controller.screen.clear_row(2)
-    controller.screen.print("A - Exit")
-    while not (controller.buttonA.pressing()):
-        wait(5, MSEC)
-    brain.program_stop()
